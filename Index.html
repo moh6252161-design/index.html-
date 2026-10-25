@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Les 30 Langues</title>
+<meta name="referrer" content="no-referrer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Hanken+Grotesk:wght@400;500;700&display=swap">
+<style>
+/* Layout: an atlas of language tiles (one colour per language), then a three-step path per language: discover, listen, quiz. */
+:root{
+  --bg:#EDF0F6; --surface:#FFFFFF; --fg:#131830; --muted:#586079; --line:#D3D9E6;
+  --accent:#3347FF; --accent-fg:#FFFFFF; --good:#12805C; --bad:#C23B22; --good-bg:#DDF3EA; --bad-bg:#FBE4DE;
+  --t-bg-s:70%; --t-bg-l:90%; --t-fg-s:60%; --t-fg-l:30%;
+  --f-display:"Bricolage Grotesque","Hanken Grotesk",system-ui,sans-serif;
+  --f-body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1120; --surface:#171B30; --fg:#EEF0FA; --muted:#98A0BC; --line:#2A3050;
+    --accent:#8191FF; --accent-fg:#0E1120; --good:#4CD4A0; --bad:#FF8A72; --good-bg:#12372C; --bad-bg:#46211A;
+    --t-bg-s:32%; --t-bg-l:19%; --t-fg-s:80%; --t-fg-l:78%; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1120; --surface:#171B30; --fg:#EEF0FA; --muted:#98A0BC; --line:#2A3050;
+  --accent:#8191FF; --accent-fg:#0E1120; --good:#4CD4A0; --bad:#FF8A72; --good-bg:#12372C; --bad-bg:#46211A;
+  --t-bg-s:32%; --t-bg-l:19%; --t-fg-s:80%; --t-fg-l:78%; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.1}
+.col{display:flex;flex-direction:column;gap:18px}
+.topr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.85rem}
+.aud{font-size:.8rem;color:var(--muted);min-height:1.2em;overflow-wrap:anywhere}
+.hero .aud{color:var(--fg);opacity:.8}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
+.total{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.sub{color:var(--muted);margin:6px 0 0;max-width:60ch}
+h1{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:800;letter-spacing:-.02em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{--tbg:hsl(var(--h) var(--t-bg-s) var(--t-bg-l));--tfg:hsl(var(--h) var(--t-fg-s) var(--t-fg-l));
+  background:var(--tbg);color:var(--tfg);border:0;border-radius:14px;padding:12px 14px 12px;text-align:left;
+  display:flex;flex-direction:column;gap:2px;min-height:112px;min-width:0;position:relative}
+.tile:hover:not(:disabled){transform:translateY(-2px)}
+.tile:disabled{opacity:.6;cursor:default}
+.tile .rank{font-size:.72rem;font-weight:700;letter-spacing:.08em;font-variant-numeric:tabular-nums;opacity:.8}
+.tile .nat{font-family:var(--f-display);font-weight:800;font-size:1.45rem;line-height:1.15;margin-top:4px;overflow-wrap:anywhere}
+.tile .nm{font-size:.82rem;color:var(--fg);opacity:.85}
+.tile .dots{display:flex;gap:4px;margin-top:auto;padding-top:8px}
+.dot{width:16px;height:5px;border-radius:3px;background:var(--tfg);opacity:.25}
+.dot.on{opacity:1}
+.soon{font-size:.72rem;font-weight:700;margin-top:auto;padding-top:8px}
+.back{align-self:flex-start;background:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.hero{--tbg:hsl(var(--h) var(--t-bg-s) var(--t-bg-l));--tfg:hsl(var(--h) var(--t-fg-s) var(--t-fg-l));
+  background:var(--tbg);color:var(--tfg);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:6px}
+.hero .nat{font-family:var(--f-display);font-weight:800;font-size:clamp(2.4rem,11vw,4rem);line-height:1.1;overflow-wrap:anywhere}
+.hero .meta{color:var(--fg);font-size:.95rem}
+.note{font-size:.85rem;color:var(--fg);opacity:.8;margin-top:4px}
+.lessons{display:flex;flex-direction:column;gap:10px}
+.lesson{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;width:100%}
+.lesson:disabled{opacity:.55;cursor:default}
+.lesson .n{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;border:2px solid var(--accent);color:var(--accent)}
+.lesson.done .n{background:var(--good);border-color:var(--good);color:var(--surface)}
+.lesson .tx{min-width:0;flex:1}
+.lesson .tx b{display:block;font-family:var(--f-display);font-size:1.1rem}
+.lesson .tx span{font-size:.88rem;color:var(--muted)}
+.lesson .st{font-size:.82rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.lhead{display:flex;flex-direction:column;gap:10px}
+.lhead .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lhead .ttl{font-family:var(--f-display);font-weight:800;font-size:1.05rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.fr{font-size:1.05rem;color:var(--muted)}
+.big{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,9vw,3rem);line-height:1.15;overflow-wrap:anywhere}
+.roman{font-size:1.15rem;color:var(--accent);font-weight:500;overflow-wrap:anywhere}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 18px;font-weight:700}
+.btn.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0;width:100%}
+.opt .o1{font-weight:700;font-size:1.1rem;overflow-wrap:anywhere}
+.opt .o2{font-size:.85rem;color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.ok{background:var(--good-bg);border-color:var(--good)}
+.opt.ko{background:var(--bad-bg);border-color:var(--bad)}
+.fb{font-weight:700}
+.fb.ok{color:var(--good)} .fb.ko{color:var(--bad)}
+.score{font-family:var(--f-display);font-weight:800;font-size:3.2rem;font-variant-numeric:tabular-nums}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:.9rem;max-width:calc(100% - 32px);z-index:20}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.tile:hover{transform:none}}
+</style>
+
+<div class="wrap">
+  <div class="top" id="top"></div>
+  <div id="app"></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const UI={
+fr:{app:"Les 30 Langues",done:"{n} / {m} leçons réussies",speak:"Je parle",change:"changer",
+baseH:"Quelle langue parles-tu ?",baseP:"Tu apprendras à travers elle : toutes les phrases seront traduites dans cette langue.",sugg:"Suggérée",
+tgtH:"Que veux-tu apprendre ?",tgtP:"Les 30 langues les plus parlées, classées par nombre de locuteurs. Chaque langue a 3 leçons de 6 phrases : découvre, écoute, puis passe le quiz. Traductions en {b}.",
+soon:"Bientôt disponible",rank:"N°{n}",rankW:"N°{n} mondial",all:"← Toutes les langues",lessonsBack:"← Leçons",
+l1:"Saluer",l1s:"Bonjour, au revoir, des nouvelles",l2:"Être poli",l2s:"Merci, pardon, oui et non",l3:"Se débrouiller",l3s:"Se présenter, demander, appeler à l'aide",
+spk:"environ {m} millions de locuteurs au total",locked:"Verrouillée",todo:"À faire",ok:"Réussie {s}/{n}",retry:"À refaire {s}/{n}",
+phrase:"Phrase {i} sur {n}",listen:"Écouter",slow:"Lent",prev:"Précédent",next:"Suivant",toQuiz:"Passer au quiz",
+q1:"Que signifie cette phrase ?",q2:"Comment dit-on…",qprog:"Quiz · question {i} sur {n}",
+right:"Bonne réponse !",wrong:"Pas tout à fait. La bonne réponse est en vert.",cont:"Continuer",seeScore:"Voir mon score",
+res:"Résultat",passNext:"Leçon réussie. La suivante est ouverte.",passLast:"Dernière leçon réussie. Bravo !",fail:"Il faut au moins {p} bonnes réponses. Relis les phrases et réessaie.",
+nextL:"Leçon suivante",redo:"Refaire",review:"Revoir la leçon",backL:"Retour aux leçons",
+test:"Tester l'audio",viaDev:"Audio : voix de l'appareil ({v})",viaDev0:"Audio : voix de l'appareil",viaNet:"Audio : voix en ligne",
+noV:"Pas d'audio pour {l}. Vérifie ta connexion internet, ou installe la voix dans les réglages de ton appareil (langue, synthèse vocale)."},
+en:{app:"The 30 Languages",done:"{n} / {m} lessons passed",speak:"I speak",change:"change",
+baseH:"Which language do you speak?",baseP:"You will learn through it: every phrase will be translated into this language.",sugg:"Suggested",
+tgtH:"What do you want to learn?",tgtP:"The 30 most spoken languages, ranked by number of speakers. Each language has 3 lessons of 6 phrases: discover, listen, then take the quiz. Translations in {b}.",
+soon:"Coming soon",rank:"No. {n}",rankW:"No. {n} worldwide",all:"← All languages",lessonsBack:"← Lessons",
+l1:"Greetings",l1s:"Hello, goodbye, small talk",l2:"Being polite",l2s:"Thanks, sorry, yes and no",l3:"Getting by",l3s:"Introduce yourself, ask, call for help",
+spk:"about {m} million speakers in total",locked:"Locked",todo:"To do",ok:"Passed {s}/{n}",retry:"Retry {s}/{n}",
+phrase:"Phrase {i} of {n}",listen:"Listen",slow:"Slow",prev:"Previous",next:"Next",toQuiz:"Start the quiz",
+q1:"What does this phrase mean?",q2:"How do you say…",qprog:"Quiz · question {i} of {n}",
+right:"Correct!",wrong:"Not quite. The right answer is in green.",cont:"Continue",seeScore:"See my score",
+res:"Result",passNext:"Lesson passed. The next one is open.",passLast:"Last lesson passed. Well done!",fail:"You need at least {p} correct answers. Review the phrases and try again.",
+nextL:"Next lesson",redo:"Do it again",review:"Review the lesson",backL:"Back to lessons",
+test:"Test audio",viaDev:"Audio: device voice ({v})",viaDev0:"Audio: device voice",viaNet:"Audio: online voice",
+noV:"No audio for {l}. Check your internet connection, or install the voice in your device settings (language, text-to-speech)."},
+es:{app:"Los 30 Idiomas",done:"{n} / {m} lecciones superadas",speak:"Hablo",change:"cambiar",
+baseH:"¿Qué idioma hablas?",baseP:"Aprenderás a través de él: todas las frases se traducirán a este idioma.",sugg:"Sugerido",
+tgtH:"¿Qué quieres aprender?",tgtP:"Los 30 idiomas más hablados, ordenados por número de hablantes. Cada idioma tiene 3 lecciones de 6 frases: descubre, escucha y haz el cuestionario. Traducciones en {b}.",
+soon:"Próximamente",rank:"N.º {n}",rankW:"N.º {n} mundial",all:"← Todos los idiomas",lessonsBack:"← Lecciones",
+l1:"Saludar",l1s:"Hola, adiós, cómo estás",l2:"Ser educado",l2s:"Gracias, perdón, sí y no",l3:"Arreglárselas",l3s:"Presentarse, preguntar, pedir ayuda",
+spk:"unos {m} millones de hablantes en total",locked:"Bloqueada",todo:"Por hacer",ok:"Superada {s}/{n}",retry:"Repetir {s}/{n}",
+phrase:"Frase {i} de {n}",listen:"Escuchar",slow:"Lento",prev:"Anterior",next:"Siguiente",toQuiz:"Ir al cuestionario",
+q1:"¿Qué significa esta frase?",q2:"¿Cómo se dice…?",qprog:"Cuestionario · pregunta {i} de {n}",
+right:"¡Correcto!",wrong:"No del todo. La respuesta correcta está en verde.",cont:"Continuar",seeScore:"Ver mi puntuación",
+res:"Resultado",passNext:"Lección superada. La siguiente está abierta.",passLast:"Última lección superada. ¡Bravo!",fail:"Necesitas al menos {p} respuestas correctas. Repasa las frases e inténtalo de nuevo.",
+nextL:"Siguiente lección",redo:"Repetir",review:"Repasar la lección",backL:"Volver a las lecciones",
+test:"Probar el audio",viaDev:"Audio: voz del dispositivo ({v})",viaDev0:"Audio: voz del dispositivo",viaNet:"Audio: voz en línea",
+noV:"No hay audio para {l}. Comprueba tu conexión a internet o instala la voz en los ajustes del dispositivo (idioma, síntesis de voz)."},
+pt:{app:"As 30 Línguas",done:"{n} / {m} lições concluídas",speak:"Eu falo",change:"mudar",
+baseH:"Que língua você fala?",baseP:"Você vai aprender por meio dela: todas as frases serão traduzidas para essa língua.",sugg:"Sugerida",
+tgtH:"O que você quer aprender?",tgtP:"As 30 línguas mais faladas, ordenadas por número de falantes. Cada língua tem 3 lições de 6 frases: descubra, ouça e faça o quiz. Traduções em {b}.",
+soon:"Em breve",rank:"N.º {n}",rankW:"N.º {n} no mundo",all:"← Todas as línguas",lessonsBack:"← Lições",
+l1:"Cumprimentar",l1s:"Olá, tchau, como vai",l2:"Ser educado",l2s:"Obrigado, desculpe, sim e não",l3:"Se virar",l3s:"Se apresentar, perguntar, pedir ajuda",
+spk:"cerca de {m} milhões de falantes no total",locked:"Bloqueada",todo:"A fazer",ok:"Concluída {s}/{n}",retry:"Refazer {s}/{n}",
+phrase:"Frase {i} de {n}",listen:"Ouvir",slow:"Lento",prev:"Anterior",next:"Próxima",toQuiz:"Ir para o quiz",
+q1:"O que significa esta frase?",q2:"Como se diz…",qprog:"Quiz · pergunta {i} de {n}",
+right:"Correto!",wrong:"Quase. A resposta certa está em verde.",cont:"Continuar",seeScore:"Ver minha pontuação",
+res:"Resultado",passNext:"Lição concluída. A próxima está aberta.",passLast:"Última lição concluída. Parabéns!",fail:"Você precisa de pelo menos {p} respostas certas. Revise as frases e tente de novo.",
+nextL:"Próxima lição",redo:"Refazer",review:"Rever a lição",backL:"Voltar às lições",
+test:"Testar o áudio",viaDev:"Áudio: voz do aparelho ({v})",viaDev0:"Áudio: voz do aparelho",viaNet:"Áudio: voz online",
+noV:"Sem áudio para {l}. Verifique sua conexão com a internet ou instale a voz nas configurações do aparelho (idioma, síntese de voz)."}
+};
+const PASS=9,QN=12;
+const EN_NAMES={en:"English",zh:"Mandarin",hi:"Hindi",es:"Spanish",ar:"Standard Arabic",fr:"French",bn:"Bengali",pt:"Portuguese",ru:"Russian",ur:"Urdu",id:"Indonesian",de:"German",ja:"Japanese",pcm:"Nigerian Pidgin",mr:"Marathi",te:"Telugu",tr:"Turkish",ta:"Tamil",yue:"Cantonese",vi:"Vietnamese",wu:"Wu (Shanghainese)",tl:"Tagalog",ko:"Korean",arz:"Egyptian Arabic",fa:"Persian",ha:"Hausa",sw:"Swahili",jv:"Javanese",it:"Italian",pnb:"Western Punjabi"};
+const NOTES={
+ar:["Arabe littéraire, compris dans tout le monde arabe.","Modern Standard Arabic, understood across the Arab world."],
+fr:["Ici en français familier, comme entre amis.","Here in casual French, as between friends."],
+pcm:["Créole à base d'anglais parlé au Nigéria. L'audio utilise une voix anglaise : l'accent est approximatif.","English-based creole spoken in Nigeria. Audio uses an English voice, so the accent is approximate."],
+yue:["Écrit en caractères traditionnels, avec la romanisation jyutping.","Written in traditional characters with Jyutping romanization."],
+arz:["Le dialecte du Caire, compris presque partout. L'audio peut utiliser une voix d'arabe standard.","The Cairo dialect, understood almost everywhere. Audio may use a Standard Arabic voice."],
+ha:["Parlé surtout au Nigéria et au Niger. La voix dépend de ton appareil.","Spoken mainly in Nigeria and Niger. Voice availability depends on your device."],
+jv:["Registre poli (krama). La voix dépend de ton appareil.","Polite register (krama). Voice availability depends on your device."],
+pnb:["Alphabet shahmukhi, comme au Pakistan. L'audio peut utiliser une voix ourdou.","Shahmukhi script, as used in Pakistan. Audio may use an Urdu voice."]
+};
+const GT={en:"en",zh:"zh-CN",hi:"hi",es:"es",ar:"ar",fr:"fr",bn:"bn",pt:"pt",ru:"ru",ur:"ur",id:"id",de:"de",ja:"ja",pcm:"en",mr:"mr",te:"te",tr:"tr",ta:"ta",yue:"yue",vi:"vi",tl:"tl",ko:"ko",arz:"ar",fa:"fa",ha:"ha",sw:"sw",jv:"jv",it:"it"};
+const RAW=[
+["en","Anglais","English",1530,["en-US"],"",0,"",["Hello","Good evening","Goodbye","How are you?","I'm fine","Nice to meet you","Please","Thank you","You're welcome","Yes","No","Sorry","My name is…","I don't understand","Water, please","How much is it?","Where is the bathroom?","Help me!"]],
+["zh","Mandarin","普通话",1150,["zh-CN"],"",0,"",["你好|nǐ hǎo","晚上好|wǎnshang hǎo","再见|zàijiàn","你好吗？|nǐ hǎo ma?","我很好|wǒ hěn hǎo","很高兴认识你|hěn gāoxìng rènshi nǐ","请|qǐng","谢谢|xièxie","不客气|bú kèqi","是|shì","不|bù","对不起|duìbuqǐ","我叫…|wǒ jiào…","我不明白|wǒ bù míngbai","请给我水|qǐng gěi wǒ shuǐ","多少钱？|duōshao qián?","洗手间在哪里？|xǐshǒujiān zài nǎlǐ?","请帮帮我！|qǐng bāngbang wǒ!"]],
+["hi","Hindi","हिन्दी",610,["hi-IN"],"",0,"",["नमस्ते|namaste","शुभ संध्या|shubh sandhya","अलविदा|alvida","आप कैसे हैं?|aap kaise hain?","मैं ठीक हूँ|main theek hoon","आपसे मिलकर खुशी हुई|aapse milkar khushi hui","कृपया|kripya","धन्यवाद|dhanyavaad","कोई बात नहीं|koi baat nahin","हाँ|haan","नहीं|nahin","माफ़ कीजिए|maaf kijiye","मेरा नाम … है|mera naam … hai","मुझे समझ नहीं आया|mujhe samajh nahin aaya","कृपया पानी दीजिए|kripya paani dijiye","यह कितने का है?|yah kitne ka hai?","शौचालय कहाँ है?|shauchalay kahaan hai?","मेरी मदद कीजिए!|meri madad kijiye!"]],
+["es","Espagnol","Español",560,["es-ES","es-MX","es"],"",0,"",["Hola","Buenas noches","Adiós","¿Cómo estás?","Estoy bien","Mucho gusto","Por favor","Gracias","De nada","Sí","No","Perdón","Me llamo…","No entiendo","Agua, por favor","¿Cuánto cuesta?","¿Dónde está el baño?","¡Ayúdame!"]],
+["ar","Arabe standard","العربية",335,["ar-SA","ar"],"",1,"Arabe littéraire, compris dans tout le monde arabe.",["مرحبًا|marḥaban","مساء الخير|masāʾ al-khayr","مع السلامة|maʿa as-salāma","كيف حالك؟|kayfa ḥāluk?","أنا بخير|ana bi-khayr","تشرفنا|tasharrafnā","من فضلك|min faḍlik","شكرًا|shukran","عفوًا|ʿafwan","نعم|naʿam","لا|lā","آسف|āsif","اسمي…|ismī…","لا أفهم|lā afham","ماء من فضلك|māʾ min faḍlik","بكم هذا؟|bikam hādhā?","أين الحمّام؟|ayna al-ḥammām?","ساعدني!|sāʿidnī!"]],
+["fr","Français","Français",310,["fr-FR","fr"],"",0,"Ici en français familier, comme on parle entre amis.",["Salut","Bonne soirée","À bientôt","Ça va ?","Ça roule","Ravi de te rencontrer","S'il te plaît","Merci beaucoup","Je t'en prie","Ouais","Nan","Désolé","Moi, c'est…","J'ai pas compris","De l'eau, s'il te plaît","C'est combien ?","Où sont les toilettes ?","À l'aide !"]],
+["bn","Bengali","বাংলা",285,["bn-BD","bn-IN","bn"],"",0,"",["নমস্কার|nomoshkar","শুভ সন্ধ্যা|shubho shondhya","বিদায়|biday","আপনি কেমন আছেন?|apni kemon achhen?","আমি ভালো আছি|ami bhalo achhi","আপনার সাথে দেখা হয়ে ভালো লাগলো|apnar shathe dekha hoye bhalo laglo","দয়া করে|doya kore","ধন্যবাদ|dhonnobad","কিছু না|kichhu na","হ্যাঁ|hyan","না|na","দুঃখিত|dukkhito","আমার নাম…|amar nam…","আমি বুঝতে পারছি না|ami bujhte parchhi na","দয়া করে একটু পানি দিন|doya kore ekṭu pani din","এটার দাম কত?|eṭar dam koto?","টয়লেট কোথায়?|toylet kothay?","আমাকে সাহায্য করুন!|amake shahajjo korun!"]],
+["pt","Portugais","Português",275,["pt-BR","pt-PT","pt"],"",0,"",["Olá","Boa noite","Tchau","Como vai você?","Estou bem","Prazer em conhecê-lo","Por favor","Obrigado","De nada","Sim","Não","Desculpe","Meu nome é…","Não entendo","Água, por favor","Quanto custa?","Onde fica o banheiro?","Me ajude!"]],
+["ru","Russe","Русский",255,["ru-RU","ru"],"",0,"",["Здравствуйте|zdravstvuyte","Добрый вечер|dobryy vecher","До свидания|do svidaniya","Как дела?|kak dela?","Хорошо|khorosho","Приятно познакомиться|priyatno poznakomit'sya","Пожалуйста|pozhaluysta","Спасибо|spasibo","Не за что|ne za chto","Да|da","Нет|nyet","Извините|izvinite","Меня зовут…|menya zovut…","Я не понимаю|ya ne ponimayu","Воды, пожалуйста|vody, pozhaluysta","Сколько это стоит?|skol'ko eto stoit?","Где туалет?|gde tualet?","Помогите!|pomogite!"]],
+["ur","Ourdou","اردو",245,["ur-PK","ur-IN","ur"],"",1,"",["السلام علیکم|assalāmu ʿalaykum","شام بخیر|shām bakhair","خدا حافظ|khudā ḥāfiz","آپ کیسے ہیں؟|āp kaise hain?","میں ٹھیک ہوں|main ṭhīk hūn","آپ سے مل کر خوشی ہوئی|āp se mil kar khushī huī","براہ مہربانی|barāh-e-meharbānī","شکریہ|shukriya","کوئی بات نہیں|koī bāt nahīn","جی ہاں|jī hān","نہیں|nahīn","معاف کیجیے|maʿāf kījiye","میرا نام … ہے|merā nām … hai","میری سمجھ میں نہیں آیا|merī samajh meṅ nahīn āyā","پانی دیجیے، براہ مہربانی|pānī dījiye, barāh-e-meharbānī","یہ کتنے کا ہے؟|yeh kitne kā hai?","بیت الخلا کہاں ہے؟|bait-ul-khalā kahān hai?","میری مدد کیجیے!|merī madad kījiye!"]],
+["id","Indonésien","Bahasa Indonesia",200,["id-ID","id"],"",0,"",["Halo","Selamat malam","Sampai jumpa","Apa kabar?","Baik","Senang bertemu dengan Anda","Tolong","Terima kasih","Sama-sama","Ya","Tidak","Maaf","Nama saya…","Saya tidak mengerti","Minta air, tolong","Berapa harganya?","Di mana toiletnya?","Tolong saya!"]],
+["de","Allemand","Deutsch",135,["de-DE","de"],"",0,"",["Hallo","Guten Abend","Auf Wiedersehen","Wie geht's?","Mir geht's gut","Freut mich","Bitte","Danke","Gern geschehen","Ja","Nein","Entschuldigung","Ich heiße…","Ich verstehe nicht","Wasser, bitte","Wie viel kostet das?","Wo ist die Toilette?","Hilfe!"]],
+["ja","Japonais","日本語",125,["ja-JP","ja"],"",0,"",["こんにちは|konnichiwa","こんばんは|konbanwa","さようなら|sayōnara","お元気ですか？|ogenki desu ka?","元気です|genki desu","はじめまして|hajimemashite","お願いします|onegai shimasu","ありがとう|arigatō","どういたしまして|dō itashimashite","はい|hai","いいえ|iie","すみません|sumimasen","私の名前は…です|watashi no namae wa … desu","わかりません|wakarimasen","お水をください|omizu o kudasai","いくらですか？|ikura desu ka?","トイレはどこですか？|toire wa doko desu ka?","助けてください！|tasukete kudasai!"]],
+["pcm","Pidgin nigérian","Naijá",120,["en-NG","en-GB"],"",0,"Créole à base d'anglais parlé au Nigéria. L'audio utilise une voix anglaise, l'accent sera approximatif.",["How far?","Good evening","Make we see later","How you dey?","I dey fine","I happy to meet you","Abeg","Thank you","No wahala","Yes","No","Sorry","My name na…","I no understand","Abeg, give me water","How much be dis one?","Where di toilet dey?","Abeg, help me!"]],
+["mr","Marathi","मराठी",100,["mr-IN","mr"],"",0,"",["नमस्कार|namaskār","शुभ संध्याकाळ|shubh sandhyākāḷ","पुन्हा भेटू|punhā bheṭū","तुम्ही कसे आहात?|tumhī kase āhāt?","मी ठीक आहे|mī ṭhīk āhe","तुम्हाला भेटून आनंद झाला|tumhālā bheṭūn ānand jhālā","कृपया|kṛpayā","धन्यवाद|dhanyavād","काही हरकत नाही|kāhī harkat nāhī","होय|hoy","नाही|nāhī","माफ करा|māf karā","माझे नाव … आहे|mājhe nāv … āhe","मला समजले नाही|malā samajle nāhī","कृपया पाणी द्या|kṛpayā pāṇī dyā","याची किंमत किती आहे?|yācī kimmat kitī āhe?","स्वच्छतागृह कुठे आहे?|svacchatāgṛha kuṭhe āhe?","मला मदत करा!|malā madat karā!"]],
+["te","Télougou","తెలుగు",95,["te-IN","te"],"",0,"",["నమస్కారం|namaskāraṁ","శుభ సాయంత్రం|śubha sāyantraṁ","వెళ్ళొస్తాను|veḷḷostānu","మీరు ఎలా ఉన్నారు?|mīru elā unnāru?","నేను బాగున్నాను|nēnu bāgunnānu","మిమ్మల్ని కలవడం ఆనందంగా ఉంది|mimmalni kalavaḍaṁ ānandaṅgā undi","దయచేసి|dayachesi","ధన్యవాదాలు|dhanyavādālu","పర్వాలేదు|parvālēdu","అవును|avunu","కాదు|kādu","క్షమించండి|kṣamin̐chaṇḍi","నా పేరు…|nā pēru…","నాకు అర్థం కాలేదు|nāku arthaṁ kālēdu","దయచేసి నీళ్లు ఇవ్వండి|dayachesi nīḷḷu ivvaṇḍi","ఇది ఎంత?|idi enta?","టాయిలెట్ ఎక్కడ ఉంది?|ṭāyileṭ ekkaḍa undi?","నాకు సహాయం చేయండి!|nāku sahāyaṁ cēyaṇḍi!"]],
+["tr","Turc","Türkçe",90,["tr-TR","tr"],"",0,"",["Merhaba","İyi akşamlar","Hoşça kal","Nasılsınız?","İyiyim","Tanıştığımıza memnun oldum","Lütfen","Teşekkür ederim","Rica ederim","Evet","Hayır","Özür dilerim","Benim adım…","Anlamıyorum","Su lütfen","Bu ne kadar?","Tuvalet nerede?","Yardım edin!"]],
+["ta","Tamoul","தமிழ்",87,["ta-IN","ta"],"",0,"",["வணக்கம்|vaṇakkam","மாலை வணக்கம்|mālai vaṇakkam","போய் வருகிறேன்|pōy varukirēṉ","நீங்கள் எப்படி இருக்கிறீர்கள்?|nīṅkaḷ eppaṭi irukkiṟīrkaḷ?","நான் நலமாக இருக்கிறேன்|nāṉ nalamāka irukkiṟēṉ","உங்களைச் சந்தித்ததில் மகிழ்ச்சி|uṅkaḷaic cantittatil makiḻcci","தயவுசெய்து|tayavuceytu","நன்றி|naṉṟi","பரவாயில்லை|paravāyillai","ஆம்|ām","இல்லை|illai","மன்னிக்கவும்|maṉṉikkavum","என் பெயர்…|eṉ peyar…","எனக்குப் புரியவில்லை|eṉakkup puriyavillai","தயவுசெய்து தண்ணீர் கொடுங்கள்|tayavuceytu taṇṇīr koṭuṅkaḷ","இது எவ்வளவு?|itu evvaḷavu?","கழிப்பறை எங்கே உள்ளது?|kaḻippaṟai eṅkē uḷḷatu?","எனக்கு உதவுங்கள்!|eṉakku utavuṅkaḷ!"]],
+["yue","Cantonais","粵語",86,["zh-HK","yue-HK","yue"],"",0,"Écrit ici en caractères traditionnels, avec la romanisation jyutping.",["你好|nei5 hou2","晚上好|maan5 soeng6 hou2","再見|zoi3 gin3","你好嗎？|nei5 hou2 maa3?","我好好|ngo5 hou2 hou2","好高興認識你|hou2 gou1 hing3 jing6 sik1 nei5","唔該|m4 goi1","多謝|do1 ze6","唔使客氣|m4 sai2 haak3 hei3","係|hai6","唔係|m4 hai6","對唔住|deoi3 m4 zyu6","我叫…|ngo5 giu3…","我唔明|ngo5 m4 ming4","唔該畀杯水我|m4 goi1 bei2 bui1 seoi2 ngo5","幾多錢？|gei2 do1 cin2?","廁所喺邊度？|ci3 so2 hai2 bin1 dou6?","救命呀！|gau3 meng6 aa3!"]],
+["vi","Vietnamien","Tiếng Việt",86,["vi-VN","vi"],"",0,"",["Xin chào","Chào buổi tối","Tạm biệt","Bạn khỏe không?","Tôi khỏe","Rất vui được gặp bạn","Làm ơn","Cảm ơn","Không có gì","Vâng","Không","Xin lỗi","Tên tôi là…","Tôi không hiểu","Cho tôi xin nước","Cái này bao nhiêu tiền?","Nhà vệ sinh ở đâu?","Giúp tôi với!"]],
+["wu","Wu (shanghaïen)","吴语",83,[],"",0,"",null],
+["tl","Tagalog","Tagalog",83,["fil-PH","tl-PH","fil"],"",0,"",["Kumusta","Magandang gabi","Paalam","Kumusta ka?","Mabuti naman ako","Ikinagagalak kitang makilala","Pakiusap","Salamat","Walang anuman","Oo","Hindi","Pasensya na","Ako si…","Hindi ko naiintindihan","Pahingi po ng tubig","Magkano ito?","Nasaan ang banyo?","Tulungan mo ako!"]],
+["ko","Coréen","한국어",82,["ko-KR","ko"],"",0,"",["안녕하세요|annyeonghaseyo","좋은 저녁이에요|joeun jeonyeogieyo","안녕히 가세요|annyeonghi gaseyo","어떻게 지내세요?|eotteoke jinaeseyo?","잘 지내요|jal jinaeyo","만나서 반갑습니다|mannaseo bangapseumnida","부탁합니다|butakamnida","감사합니다|gamsahamnida","천만에요|cheonmaneyo","네|ne","아니요|aniyo","죄송합니다|joesonghamnida","제 이름은 …입니다|je ireumeun … imnida","이해가 안 돼요|ihaega an dwaeyo","물 좀 주세요|mul jom juseyo","얼마예요?|eolmayeyo?","화장실이 어디예요?|hwajangsiri eodiyeyo?","도와주세요!|dowajuseyo!"]],
+["arz","Arabe égyptien","مصري",82,["ar-EG","ar-SA","ar"],"",1,"Le dialecte du Caire, compris presque partout grâce au cinéma et à la télévision.",["أهلاً|ahlan","مساء الخير|masā' el-kheir","مع السلامة|ma'a es-salāma","إزيك؟|ezzayyak?","أنا كويس|ana kwayyis","فرصة سعيدة|forṣa sa'īda","من فضلك|min faḍlak","شكرًا|shukran","العفو|el-'afw","أيوه|aywa","لأ|la'","آسف|āsif","اسمي…|ismi…","مش فاهم|mish fāhim","عايز مية لو سمحت|'āyez mayya law samaḥt","بكام ده؟|bikām da?","الحمّام فين؟|el-ḥammām fēn?","ساعدني!|sā'edni!"]],
+["fa","Persan","فارسی",80,["fa-IR","fa"],"",1,"",["سلام|salām","عصر بخیر|ʿaṣr bekheyr","خداحافظ|khodāhāfez","حال شما چطور است؟|ḥāl-e shomā chetor ast?","خوبم، ممنون|khubam, mamnun","از آشنایی با شما خوشوقتم|az āshnāyi bā shomā khoshvaqtam","لطفاً|lotfan","ممنون|mamnun","خواهش می‌کنم|khāhesh mikonam","بله|bale","نه|na","ببخشید|bebakhshid","اسم من … است|esm-e man … ast","متوجه نمی‌شوم|motavajjeh nemishavam","لطفاً یک لیوان آب|lotfan yek livān āb","این چند است؟|in chand ast?","دستشویی کجاست؟|dastshuyi kojāst?","کمکم کنید!|komakam konid!"]],
+["ha","Haoussa","Hausa",80,["ha-NG","ha"],"",0,"Le haoussa est parlé surtout au Nigéria et au Niger. La voix dépend de ton appareil.",["Sannu","Barka da yamma","Sai an jima","Yaya kuke?","Ina lafiya lau","Na ji daɗin saninka","Don Allah","Na gode","Babu komai","Eh","A'a","Yi haƙuri","Sunana…","Ban gane ba","Don Allah, ba ni ruwa","Nawa ne wannan?","Ina bandaki yake?","Ka taimake ni!"]],
+["sw","Swahili","Kiswahili",75,["sw-KE","sw-TZ","sw"],"",0,"",["Hujambo","Habari za jioni","Kwaheri","Habari yako?","Nzuri","Nafurahi kukutana nawe","Tafadhali","Asante","Karibu","Ndiyo","Hapana","Samahani","Jina langu ni…","Sielewi","Maji, tafadhali","Ni bei gani?","Choo kiko wapi?","Nisaidie!"]],
+["jv","Javanais","Basa Jawa",68,["jv-ID","jv"],"",0,"Registre poli (krama). La voix dépend de ton appareil.",["Halo","Sugeng dalu","Sugeng tindak","Piye kabare?","Sae","Seneng kepanggih","Mangga","Matur nuwun","Sami-sami","Inggih","Mboten","Nuwun sewu","Nami kula…","Kula mboten ngertos","Nyuwun toya","Pinten regine?","Kamar mandi wonten pundi?","Tulung kula!"]],
+["it","Italien","Italiano",68,["it-IT","it"],"",0,"",["Ciao","Buonasera","Arrivederci","Come stai?","Sto bene","Piacere","Per favore","Grazie","Prego","Sì","No","Scusi","Mi chiamo…","Non capisco","Acqua, per favore","Quanto costa?","Dov'è il bagno?","Aiuto!"]],
+["pnb","Pendjabi occidental","پنجابی",66,["pa-PK","pa-IN","ur-PK","ur"],"",1,"Écrit en alphabet shahmukhi, comme au Pakistan. L'audio peut utiliser une voix ourdou.",["سلام|salām","شام بخیر|shām bakhair","خدا حافظ|khudā ḥāfiz","تسی کِداں او؟|tusī kidāṇ o?","میں ٹھیک آں|maiṇ ṭhīk āṇ","تہانوں مل کے خوشی ہوئی|tuhānūṇ mil ke khushī hoī","مہربانی کر کے|meharbānī kar ke","شکریہ|shukriyā","کوئی گل نئیں|koī gal nahīṇ","ہاں|hāṇ","نئیں|nahīṇ","معافی کرنا|māfī karnā","میرا ناں … اے|merā nāṇ … e","مینوں سمجھ نئیں آئی|mainūṇ samajh nahīṇ āī","پانی دیو، مہربانی کر کے|pānī deo, meharbānī kar ke","ایہہ کنے دا اے؟|eh kine dā e?","واش روم کتھے اے؟|wāsh-room kithe e?","میری مدد کرو!|merī madad karo!"]]
+];
+const LANGS=RAW.map((r,i)=>({id:r[0],rank:i+1,n:r[1],en:EN_NAMES[r[0]],nat:r[2],sp:r[3],tts:r[0]==="pcm"?[...r[4],"en"]:r[4],gt:GT[r[0]]||null,rtl:!!r[6],h:(i*47)%360,
+  items:r[8]?r[8].map(s=>{const p=s.split("|");return{t:p[0],r:p[1]||""}}):null,locked:!r[8]}));
+const PLAYABLE=LANGS.filter(l=>!l.locked);
+const byId=id=>LANGS.find(l=>l.id===id);
+
+const KEY="langues30-v2";
+let mem={};
+try{const s=localStorage.getItem(KEY);if(s)mem=JSON.parse(s)||{}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){}}
+function scores(id){return mem[id]||[null,null,null]}
+function passed(id,i){const s=scores(id)[i];return s!==null&&s>=PASS}
+function unlocked(id,i){return i===0||passed(id,i-1)}
+
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+const S={view:"base",base:null,lang:null,lesson:0,idx:0,qs:[],qi:0,score:0,answered:null};
+const navLang=(navigator.language||"en").slice(0,2).toLowerCase();
+function uiCode(){const c=S.base||navLang;return UI[c]?c:"en"}
+function t(k,o){let s=UI[uiCode()][k]||UI.en[k]||k;if(o)for(const x in o)s=s.replace("{"+x+"}",o[x]);return s}
+function nm(l){return uiCode()==="fr"?l.n:l.en}
+function fmtSp(n){
+  const c=uiCode();
+  if(n>=1000){const v=(n/1000).toFixed(1);return c==="fr"?v.replace(".",",")+" Md":(c==="pt"?v.replace(".",",")+" bi":v+"B")}
+  return n+" M";
+}
+function cur(){return byId(S.lang)}
+function baseL(){return byId(S.base)}
+function targets(){return PLAYABLE.filter(l=>l.id!==S.base)}
+
+let toastTimer;
+function toast(msg){const e=$("#toast");e.textContent=msg;e.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{e.hidden=true},5000)}
+function setAud(msg){const e=$("#aud");if(e)e.textContent=msg||""}
+
+/* Audio: device voice first, then online voice, with a clear message if neither works. */
+let curAudio=null,speakToken=0;
+function stopAll(){speakToken++;try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}if(curAudio){try{curAudio.pause()}catch(e){}curAudio=null}}
+function voicesReady(){
+  return new Promise(res=>{
+    if(!window.speechSynthesis)return res([]);
+    let vs=[];try{vs=speechSynthesis.getVoices()}catch(e){}
+    if(vs.length)return res(vs);
+    let fin=false;const done=()=>{if(fin)return;fin=true;let v=[];try{v=speechSynthesis.getVoices()}catch(e){}res(v)};
+    try{speechSynthesis.addEventListener("voiceschanged",done,{once:true})}catch(e){}
+    setTimeout(done,1200);
+  });
+}
+function pickVoice(vs,cands){
+  for(const c of cands){
+    const b=c.toLowerCase();
+    const m=vs.filter(v=>v.lang.replace("_","-").toLowerCase().startsWith(b));
+    if(m.length)return m.find(v=>/google|enhanced|premium|natural|neural/i.test(v.name))||m[0];
+  }
+  return null;
+}
+function deviceSpeak(text,v,lang,rate){
+  return new Promise((res,rej)=>{
+    const u=new SpeechSynthesisUtterance(text);
+    if(v){u.voice=v;u.lang=v.lang}else{u.lang=lang}
+    u.rate=rate;
+    let started=false;
+    const to=setTimeout(()=>{if(!started){try{speechSynthesis.cancel()}catch(e){}rej(new Error("timeout"))}},3000);
+    u.onstart=()=>{started=true;clearTimeout(to);res()};
+    u.onerror=e=>{clearTimeout(to);if(!started)rej(new Error((e&&e.error)||"error"))};
+    speechSynthesis.speak(u);
+  });
+}
+function playOnline(text,gt,rate){
+  return new Promise((res,rej)=>{
+    const a=new Audio();
+    a.preload="auto";
+    a.src="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl="+encodeURIComponent(gt)+"&q="+encodeURIComponent(text);
+    a.playbackRate=rate;
+    try{a.preservesPitch=true}catch(e){}
+    curAudio=a;
+    const to=setTimeout(()=>rej(new Error("timeout")),6000);
+    a.onerror=()=>{clearTimeout(to);rej(new Error("error"))};
+    const p=a.play();
+    if(p&&p.then)p.then(()=>{clearTimeout(to);res()}).catch(err=>{clearTimeout(to);rej(err)});
+  });
+}
+async function speak(text,lg,slow){
+  stopAll();const tok=speakToken;
+  const clean=text.replace(/…/g,"").replace(/\s+/g," ").trim();
+  setAud("…");
+  const vs=await voicesReady();
+  if(tok!==speakToken)return;
+  const v=pickVoice(vs,lg.tts);
+  const canDevice=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance)&&(v||vs.length===0);
+  if(canDevice){
+    try{await deviceSpeak(clean,v,lg.tts[0],slow?0.6:0.9);setAud(v?t("viaDev",{v:v.name}):t("viaDev0"));return}
+    catch(e){if(tok!==speakToken)return}
+  }
+  if(lg.gt){
+    try{await playOnline(clean,lg.gt,slow?0.7:1);if(tok!==speakToken)return;setAud(t("viaNet"));return}
+    catch(e){if(tok!==speakToken)return}
+  }
+  const msg=t("noV",{l:nm(lg)});
+  setAud(msg);toast(msg);
+}
+
+function lessonItems(lg,li){
+  const b=baseL();
+  return lg.items.slice(li*6,li*6+6).map((it,k)=>{const i=li*6+k;return{...it,b:b.items[i].t,br:b.items[i].r,i}});
+}
+
+function renderTop(){
+  let done=0;const tg=targets();
+  if(S.base)tg.forEach(l=>{for(let i=0;i<3;i++)if(passed(l.id,i))done++});
+  $("#top").innerHTML='<div class="brand">'+esc(t("app"))+'</div><div class="topr">'
+    +(S.base?'<button class="chip" data-act="chbase">'+esc(t("speak"))+' : <b dir="auto">'+esc(baseL().nat)+'</b> · '+esc(t("change"))+'</button>'
+      +'<span class="total">'+esc(t("done",{n:done,m:tg.length*3}))+'</span>':'')+'</div>';
+}
+function dots(id){return [0,1,2].map(i=>'<i class="dot'+(passed(id,i)?' on':'')+'"></i>').join("")}
+
+function renderBase(){
+  const tiles=PLAYABLE.map(l=>
+    '<button class="tile" style="--h:'+l.h+'" data-act="setbase" data-id="'+l.id+'">'
+    +'<span class="rank">'+(l.id===navLang?esc(t("sugg")).toUpperCase():esc(t("rank",{n:l.rank})))+'</span>'
+    +'<span class="nat" dir="auto">'+esc(l.nat)+'</span>'
+    +'<span class="nm">'+esc(nm(l))+'</span></button>').join("");
+  app.innerHTML='<div class="col"><div><h1>'+esc(t("baseH"))+'</h1><p class="sub">'+esc(t("baseP"))+'</p></div><div class="grid">'+tiles+'</div></div>';
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  const tiles=LANGS.filter(l=>l.id!==S.base).map(l=>
+    '<button class="tile" style="--h:'+l.h+'" data-act="open" data-id="'+l.id+'"'+(l.locked?' disabled':'')+'>'
+    +'<span class="rank">'+esc(t("rank",{n:l.rank}))+'</span>'
+    +'<span class="nat" dir="auto">'+esc(l.nat)+'</span>'
+    +'<span class="nm">'+esc(nm(l))+' · '+fmtSp(l.sp)+'</span>'
+    +(l.locked?'<span class="soon">'+esc(t("soon"))+'</span>':'<span class="dots">'+dots(l.id)+'</span>')+'</button>').join("");
+  app.innerHTML='<div class="col"><div><h1>'+esc(t("tgtH"))+'</h1><p class="sub">'+esc(t("tgtP",{b:nm(baseL())}))+'</p></div><div class="grid">'+tiles+'</div></div>';
+  window.scrollTo(0,0);
+}
+
+function renderLang(){
+  const lg=cur();
+  const ls=[0,1,2].map(i=>{
+    const ok=unlocked(lg.id,i),sc=scores(lg.id)[i],done=passed(lg.id,i);
+    const st=!ok?t("locked"):(sc===null?t("todo"):t(done?"ok":"retry",{s:sc,n:QN}));
+    return '<button class="lesson'+(done?' done':'')+'" data-act="lesson" data-i="'+i+'"'+(ok?'':' disabled')+'>'
+      +'<span class="n">'+(done?'✓':(i+1))+'</span>'
+      +'<span class="tx"><b>'+esc(t("l"+(i+1)))+'</b><span>'+esc(t("l"+(i+1)+"s"))+'</span></span>'
+      +'<span class="st">'+esc(st)+'</span></button>';
+  }).join("");
+  const note=NOTES[lg.id]?NOTES[lg.id][uiCode()==="fr"?0:1]:"";
+  app.innerHTML='<div class="col">'
+    +'<button class="back" data-act="home">'+esc(t("all"))+'</button>'
+    +'<div class="hero" style="--h:'+lg.h+'"><span class="eyebrow" style="color:inherit;opacity:.8">'+esc(t("rankW",{n:lg.rank}))+'</span>'
+    +'<div class="nat" dir="auto">'+esc(lg.nat)+'</div>'
+    +'<div class="meta">'+esc(nm(lg))+' · '+esc(t("spk",{m:lg.sp}))+'</div>'
+    +(note?'<div class="note">'+esc(note)+'</div>':'')
+    +'<div class="btns" style="margin-top:10px"><button class="btn" data-act="say" data-t="'+esc(lg.items[0].t)+'">▶ '+esc(t("test"))+'</button></div>'
+    +'<div class="aud" id="aud"></div></div>'
+    +'<div class="lessons">'+ls+'</div></div>';
+  window.scrollTo(0,0);
+}
+
+function head(pct,label){
+  return '<div class="lhead"><div class="row"><button class="back" data-act="lang">'+esc(t("lessonsBack"))+'</button><span class="ttl">'+esc(label)+'</span></div>'
+    +'<div class="bar"><i style="width:'+pct+'%"></i></div></div>';
+}
+function bText(o,k){return esc(o[k])}
+
+function renderLearn(){
+  const lg=cur(),its=lessonItems(lg,S.lesson),it=its[S.idx],last=S.idx===its.length-1;
+  app.innerHTML='<div class="col">'
+    +head((S.idx+1)/its.length*100,nm(lg)+" · "+t("l"+(S.lesson+1)))
+    +'<div class="card"><span class="eyebrow">'+esc(t("phrase",{i:S.idx+1,n:its.length}))+'</span>'
+    +'<div class="fr" dir="auto">'+esc(it.b)+(it.br?' <span style="opacity:.75">('+esc(it.br)+')</span>':'')+'</div>'
+    +'<div class="big" lang="'+lg.tts[0]+'" dir="auto">'+esc(it.t)+'</div>'
+    +(it.r?'<div class="roman" dir="auto">'+esc(it.r)+'</div>':'')
+    +'<div class="btns"><button class="btn pri" data-act="say" data-t="'+esc(it.t)+'">▶ '+esc(t("listen"))+'</button>'
+    +'<button class="btn" data-act="say" data-slow="1" data-t="'+esc(it.t)+'">▶ '+esc(t("slow"))+'</button></div>'
+    +'<div class="aud" id="aud"></div></div>'
+    +'<div class="btns"><button class="btn" data-act="prev"'+(S.idx===0?' disabled':'')+'>'+esc(t("prev"))+'</button>'
+    +'<button class="btn pri" data-act="next">'+esc(last?t("toQuiz"):t("next"))+'</button></div></div>';
+  window.scrollTo(0,0);
+}
+
+function buildQuiz(){
+  const lg=cur(),b=baseL(),its=lessonItems(lg,S.lesson);
+  const all=lg.items.map((x,i)=>({t:x.t,r:x.r,b:b.items[i].t,br:b.items[i].r,i}));
+  const qs=[];
+  its.forEach(it=>{
+    const others=all.filter(a=>a.i!==it.i);
+    qs.push({k:"tf",it,opts:shuffle([it,...shuffle(others).slice(0,3)])});
+    qs.push({k:"ft",it,opts:shuffle([it,...shuffle(others).slice(0,3)])});
+  });
+  return shuffle(qs);
+}
+
+function renderQuiz(){
+  const lg=cur(),q=S.qs[S.qi],a=S.answered;
+  const prompt=q.k==="tf"
+    ?'<span class="eyebrow">'+esc(t("q1"))+'</span><div class="big" lang="'+lg.tts[0]+'" dir="auto">'+esc(q.it.t)+'</div>'+(q.it.r?'<div class="roman" dir="auto">'+esc(q.it.r)+'</div>':'')
+      +'<div class="btns"><button class="btn" data-act="say" data-t="'+esc(q.it.t)+'">▶ '+esc(t("listen"))+'</button></div>'
+    :'<span class="eyebrow">'+esc(t("q2"))+'</span><div class="big" dir="auto">'+esc(q.it.b)+'</div>'+(q.it.br?'<div class="roman" dir="auto">'+esc(q.it.br)+'</div>':'');
+  const opts=q.opts.map((o,k)=>{
+    let cls="opt";
+    if(a!==null){if(o.i===q.it.i)cls+=" ok";else if(k===a)cls+=" ko"}
+    const body=q.k==="tf"
+      ?'<span class="o1" dir="auto">'+esc(o.b)+'</span>'+(o.br?'<span class="o2" dir="auto">'+esc(o.br)+'</span>':'')
+      :'<span class="o1" dir="auto" lang="'+lg.tts[0]+'">'+esc(o.t)+'</span>'+(o.r?'<span class="o2" dir="auto">'+esc(o.r)+'</span>':'');
+    return '<button class="'+cls+'" data-act="ans" data-k="'+k+'"'+(a!==null?' disabled':'')+'>'+body+'</button>';
+  }).join("");
+  let fb="";
+  if(a!==null){
+    const good=q.opts[a].i===q.it.i;
+    fb='<div class="fb '+(good?'ok':'ko')+'">'+esc(good?t("right"):t("wrong"))+'</div>'
+      +'<div class="btns"><button class="btn pri" data-act="cont">'+esc(S.qi===S.qs.length-1?t("seeScore"):t("cont"))+'</button>'
+      +'<button class="btn" data-act="say" data-t="'+esc(q.it.t)+'">▶ '+esc(t("listen"))+'</button></div>';
+  }
+  app.innerHTML='<div class="col">'
+    +head((S.qi+(a!==null?1:0))/S.qs.length*100,t("qprog",{i:S.qi+1,n:S.qs.length}))
+    +'<div class="card">'+prompt+'<div class="aud" id="aud"></div></div><div class="opts">'+opts+'</div>'+fb+'</div>';
+  window.scrollTo(0,0);
+}
+
+function renderResult(){
+  const lg=cur(),ok=S.score>=PASS,hasNext=S.lesson<2;
+  app.innerHTML='<div class="col">'
+    +head(100,nm(lg)+" · "+t("l"+(S.lesson+1)))
+    +'<div class="card"><span class="eyebrow">'+esc(t("res"))+'</span><div class="score">'+S.score+' / '+QN+'</div>'
+    +'<div class="fb '+(ok?'ok':'ko')+'">'+esc(ok?(hasNext?t("passNext"):t("passLast")):t("fail",{p:PASS}))+'</div>'
+    +'<div class="btns">'
+    +(ok&&hasNext?'<button class="btn pri" data-act="nextlesson">'+esc(t("nextL"))+'</button>':'')
+    +'<button class="btn'+(ok&&hasNext?'':' pri')+'" data-act="redo">'+esc(ok?t("redo"):t("review"))+'</button>'
+    +'<button class="btn" data-act="lang">'+esc(t("backL"))+'</button></div></div></div>';
+  window.scrollTo(0,0);
+}
+
+function go(view){
+  S.view=view;
+  document.documentElement.lang=uiCode();
+  renderTop();
+  ({base:renderBase,home:renderHome,lang:renderLang,learn:renderLearn,quiz:renderQuiz,result:renderResult})[view]();
+}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b||b.disabled)return;
+  const act=b.dataset.act;
+  if(act==="setbase"){S.base=b.dataset.id;mem._base=S.base;save();go("home")}
+  else if(act==="chbase"){stopAll();go("base")}
+  else if(act==="open"){S.lang=b.dataset.id;go("lang")}
+  else if(act==="home"){stopAll();go("home")}
+  else if(act==="lang"){stopAll();go("lang")}
+  else if(act==="lesson"){S.lesson=+b.dataset.i;S.idx=0;go("learn")}
+  else if(act==="say"){speak(b.dataset.t,cur(),!!b.dataset.slow)}
+  else if(act==="prev"){S.idx=Math.max(0,S.idx-1);go("learn")}
+  else if(act==="next"){
+    if(S.idx<5){S.idx++;go("learn")}
+    else{S.qs=buildQuiz();S.qi=0;S.score=0;S.answered=null;go("quiz")}
+  }
+  else if(act==="ans"){
+    if(S.answered!==null)return;
+    const k=+b.dataset.k,q=S.qs[S.qi];S.answered=k;
+    if(q.opts[k].i===q.it.i)S.score++;
+    renderQuiz();
+    speak(q.it.t,cur(),false);
+  }
+  else if(act==="cont"){
+    stopAll();
+    if(S.qi<S.qs.length-1){S.qi++;S.answered=null;go("quiz")}
+    else{
+      const arr=scores(S.lang).slice();
+      arr[S.lesson]=Math.max(arr[S.lesson]===null?0:arr[S.lesson],S.score);
+      mem[S.lang]=arr;save();go("result");
+    }
+  }
+  else if(act==="redo"){S.idx=0;go("learn")}
+  else if(act==="nextlesson"){S.lesson++;S.idx=0;go("learn")}
+});
+
+if(mem._base&&PLAYABLE.some(l=>l.id===mem._base)){S.base=mem._base;go("home")}else go("base");
+
+voicesReady();
+</script>
+</body></html>
